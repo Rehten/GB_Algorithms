@@ -2,19 +2,23 @@
 
 int main()
 {
-    double human_mass;
-    double human_height;
+    int user_input;
+    int result = 0;
 
-    printf("Welcome to my mass index calculator for human body!\n");
-    printf("enter mass: ");
-    scanf("%lf", &human_mass);
-    printf("\n");
-    printf("human mass is: %.2f \n", human_mass);
-    printf("enter height: ");
-    scanf("%lf", &human_height);
-    printf("\n");
-    printf("human height is: %.2lf ", human_height);
+    printf("welcome to my max int calculator\n");
 
-    printf("human mass index is : %.2lf", (human_mass/(human_height * human_height)));
+    for (int i = 1; i <= 4 /* количество чисел для сравнения */; i++)
+    {
+        printf("number %d: ", i);
+        scanf("%d", &user_input);
+        if ((result < user_input) || (i == 1 /* на первой итерации всегда записывать */))
+        {
+            result = user_input;
+            continue;
+        }
+    }
+
+    printf("max number is %d: ", result);
+
     return 0;
 }
