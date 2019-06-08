@@ -2,23 +2,24 @@
 
 int main()
 {
-    int user_input;
-    int result = 0;
+    int a;
+    int b;
+    // буферная переменная
+    int c;
 
-    printf("welcome to my max int calculator\n");
+    printf("welcome to my variable reverse program!\n");
 
-    for (int i = 1; i <= 4 /* количество чисел для сравнения */; i++)
-    {
-        printf("number %d: ", i);
-        scanf("%d", &user_input);
-        if ((result < user_input) || (i == 1 /* на первой итерации всегда записывать */))
-        {
-            result = user_input;
-            continue;
-        }
-    }
+    printf("enter a val: ");
+    scanf("%d", &a);
 
-    printf("max number is %d: ", result);
+    printf("enter b val: ");
+    scanf("%d", &b);
+
+    c = b;
+    b = a;
+    a = c;
+
+    printf("after reverse a is %d, and b is %d", a, b);
 
     return 0;
 }
