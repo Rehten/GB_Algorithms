@@ -4,8 +4,6 @@ int main()
 {
     int a;
     int b;
-    // буферная переменная
-    int c;
 
     printf("welcome to my variable reverse program!\n");
 
@@ -15,11 +13,12 @@ int main()
     printf("enter b val: ");
     scanf("%d", &b);
 
-    c = b;
-    b = a;
-    a = c;
+    a = b + a;
+    b = a - b;
+    a = a - b;
 
     printf("after reverse a is %d, and b is %d", a, b);
+
 
     return 0;
 }
