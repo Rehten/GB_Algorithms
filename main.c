@@ -6,29 +6,46 @@ struct ChessField {
 
 int main(int argc, char *argv[])
 {
-    struct ChessField field1 = {0, 0};
-    struct ChessField field2 = {0, 0};
+    int a;
+    int b;
+    printf("Welcome to my squares and cubes program\n");
 
-    printf("Welcome to my chessfields color compare program\n");
+    printf("enter a: ");
+    scanf("%d", &a);
+    printf("enter b: ");
+    scanf("%d", &b);
 
-    printf("Enter x and y coordinates of field 1\n");
-    printf("x-");
-    scanf("%d", &field1.x);
-    printf("y-");
-    scanf("%d", &field1.y);
+    if ((a <= b) && (a >=0) && (b >=0))
+    {
+        printf("a is equal %d, and b is equal to %d\n", a, b);
 
-    printf("Enter x and y coordinates of field 2\n");
-    printf("x-");
-    scanf("%d", &field2.x);
-    printf("y-");
-    scanf("%d", &field2.y);
+        for (int i = 0; i < b; i++)
+        {
+            if ((i * i >= a) && (i * i <= b))
+            {
+                printf("number %d: ", i);
+                printf(", square: %d", i * i);
+            }
+            else
+            {
+                goto EndIteration; /* рискованный ход для оптимизации алгоритма по скорости */
+            }
 
-    printf("Field 1 is x-%d y-%d, Field 2 is x-%d and y-%d\n", field1.x, field1.y, field2.x, field2.y);
+            if ((i * i * i >= a) && (i * i * i <= b))
+            {
+                printf(", cube: %d", i * i * i);
+            }
+            printf("\n");
+            EndIteration:
+                continue;
+        }
 
-    int diff_x = (field1.x - field2.x) > 0 ? (field1.x - field2.x) : (field2.x - field1.x);
-    int diff_y = (field1.y - field2.y) > 0 ? (field1.y - field2.y) : (field2.y - field1.y);
-
-    printf("diff_x is %d, diff y is %d. Colors of field 1 and field 2 is equals: %s", diff_x, diff_y, (diff_x + diff_y)%2 == 0 ? "true" : "false");
+        printf("calculation ended.");
+    }
+    else
+        {
+        printf("Error");
+    }
 
     return 0;
 }
