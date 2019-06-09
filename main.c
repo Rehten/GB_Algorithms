@@ -2,28 +2,24 @@
 
 int main(int argc, char *argv[])
 {
-    int N;
-    printf("Welcome to my N>0 Program!\n");
+    int user_input = 1;
+    int summ = 0;
+    int index = 0;
 
-    printf("Enter N: ");
-    scanf("%d", &N);
+    printf("Enter any numbers except 0 for finished calculation, then return middle arithemtical 2, 4, 6... finished 8\n");
 
-    while (N != 0)
+    while (user_input != 0)
     {
-        if ((N%10)%2 == 0)
+        scanf("%d", &user_input);
+
+        if (user_input%10 == 8)
         {
-            N /= 10;
-        }
-        else
-        {
-            printf("True - number is %d", N%10);
-            // Оптимизация производительности - варианты без goto предполагают наличие еще одной переменной
-            goto EndProgram; /* хотя может я просто хочу поиграться с goto */
+            index++;
+            summ += user_input;
         }
     }
 
-    printf("False");
+    printf("Average arythmetical is %.2f", (float)summ/(float)index);
 
-    EndProgram:
-        return 0;
+    return 0;
 }
