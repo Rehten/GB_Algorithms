@@ -1,62 +1,34 @@
 #include <stdio.h>
-
-// I work on MinGW Windows and its compiler bad support russian
-enum AgeEnds {
-    Goda = 1,
-    God = 2,
-    Let = 3
+struct ChessField {
+    int x;
+    int y;
 };
 
-char* age_end_by_index (enum AgeEnds ends)
+int main(int argc, char *argv[])
 {
-    switch (ends)
-    {
-        case Goda:
-            return "goda";
-        case God:
-            return "god";
-        case Let:
-            return "let";
-        default:
-            return "Error!";
-    }
-}
+    struct ChessField field1 = {0, 0};
+    struct ChessField field2 = {0, 0};
 
-enum AgeEnds index_from_int (int num)
-{
-    // Цель - взять лишь последние два числа
-    int num_data[2] = {0, 0};
-    num_data[0] = (num/10)%10;
-    num_data[1] = num%10;
+    printf("Welcome to my chessfields color compare program\n");
 
-    switch (num_data[0])
-    {
-        case 1:
-            return Let;
-        default:
-            if (num_data[1] == 1)
-            {
-                return God;
-            }
-            else if ((num_data[1] > 1) && (num_data[1] < 5))
-            {
-                return Goda;
-            }
-            else
-            {
-                return Let;
-            }
-    }
-}
+    printf("Enter x and y coordinates of field 1\n");
+    printf("x-");
+    scanf("%d", &field1.x);
+    printf("y-");
+    scanf("%d", &field1.y);
 
-int main()
-{
-    int human_age;
-    printf("Welcome to my human age program\n");
-    printf("enter human age: ");
-    scanf("%d", &human_age);
+    printf("Enter x and y coordinates of field 2\n");
+    printf("x-");
+    scanf("%d", &field2.x);
+    printf("y-");
+    scanf("%d", &field2.y);
 
-    printf("%d %s", human_age, age_end_by_index(index_from_int(human_age)));
+    printf("Field 1 is x-%d y-%d, Field 2 is x-%d and y-%d\n", field1.x, field1.y, field2.x, field2.y);
+
+    int diff_x = (field1.x - field2.x) > 0 ? (field1.x - field2.x) : (field2.x - field1.x);
+    int diff_y = (field1.y - field2.y) > 0 ? (field1.y - field2.y) : (field2.y - field1.y);
+
+    printf("diff_x is %d, diff y is %d. Colors of field 1 and field 2 is equals: %s", diff_x, diff_y, (diff_x + diff_y)%2 == 0 ? "true" : "false");
 
     return 0;
 }
