@@ -1,50 +1,32 @@
 #include <stdio.h>
-struct ChessField {
-    int x;
-    int y;
-};
 
 int main(int argc, char *argv[])
 {
-    int a;
-    int b;
-    printf("Welcome to my squares and cubes program\n");
+    int N;
+    int K;
+    int C = 0; /* Частное от деления N на K */
+    int O = 0; /* Остаток от деления N на K */
+    printf("Welcome to my N-K Program!\n");
 
-    printf("enter a: ");
-    scanf("%d", &a);
-    printf("enter b: ");
-    scanf("%d", &b);
+    printf("Enter N: ");
+    scanf("%d", &N);
+    printf("Enter K: ");
+    scanf("%d", &K);
 
-    if ((a <= b) && (a >=0) && (b >=0))
+    if ((N > 0) && (K > 0))
     {
-        printf("a is equal %d, and b is equal to %d\n", a, b);
-
-        for (int i = 0; i < b; i++)
+        while (N > 0)
         {
-            if ((i * i >= a) && (i * i <= b))
-            {
-                printf("number %d: ", i);
-                printf(", square: %d", i * i);
-            }
-            else
-            {
-                goto EndIteration; /* рискованный ход для оптимизации алгоритма по скорости */
-            }
+            N -= K;
+            C++;
 
-            if ((i * i * i >= a) && (i * i * i <= b))
+            if (N < 0)
             {
-                printf(", cube: %d", i * i * i);
+                O = N + K;
             }
-            printf("\n");
-            EndIteration:
-                continue;
         }
 
-        printf("calculation ended.");
-    }
-    else
-        {
-        printf("Error");
+        printf("Chastnoe is: %d, Ostatok is: %d", C, O);
     }
 
     return 0;
