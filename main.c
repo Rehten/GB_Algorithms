@@ -2,28 +2,24 @@
 
 int main(int argc, char *argv[])
 {
-    int a;
-    int b;
-    int c;
+    int user_input = 1;
+    int summ = 0;
+    int index = 0;
 
-    printf("Enter a, b, c numbers: \n");
+    printf("Enter any numbers except 0 for finished calculation, then return middle arithemtical 2, 4, 6... finished 8\n");
 
-    scanf("%d", &a);
-    scanf("%d", &b);
-    scanf("%d", &c);
-
-    int nums[3] = {a, b, c};
-    int rslt = nums[0];
-
-    for (int i = 0; i < (sizeof(nums))/sizeof(nums[0]); i++)
+    while (user_input != 0)
     {
-        if (nums[i] > rslt)
+        scanf("%d", &user_input);
+
+        if (user_input%10 == 8)
         {
-            rslt = nums[i];
+            index++;
+            summ += user_input;
         }
     }
 
-    printf("max number is %d", rslt);
+    printf("Average arythmetical is %.2f", (float)summ/(float)index);
 
     return 0;
 }
