@@ -1,25 +1,67 @@
 #include <stdio.h>
 
-void binary_print(int decimal)
+int power_without_recursion(int a, int b)
 {
-    if (decimal > 1)
+    if (b != 0)
     {
-        binary_print(decimal/2);
-        printf("%d", decimal%2);
-    } else {
-        printf("%d", decimal%2);
+        int result = 1;
+        while (b > 0)
+        {
+            result *= a;
+            b--;
+        }
+
+        return result;
+    }
+    else
+    {
+        return 1;
+    }
+}
+
+int power_recursion(int a, int b)
+{
+    if (b != 0)
+    {
+        return a * (b != 1 ? power_recursion(a, b - 1) : 1);
+    }
+    else
+    {
+        return 1;
+    }
+}
+
+int power_recursion_optimized(int a, int b)
+{
+    if (b > 1)
+    {
+        int c = power_recursion_optimized(a, b/2);
+        return (c * c * (b%2 == 0 ? 1 : a));
+    }
+    else if (b == 1)
+    {
+        return a;
+    }
+    else if (b == 0)
+    {
+        return 1;
     }
 }
 
 int main(int argc, char *argv[])
 {
-    int decimal;
+    int a;
+    int b;
 
-    printf("Enter decimal number. Program convert it to binary\n");
-    scanf("%d", &decimal);
-    printf("Binary is: ");
+    printf("Multiply a * a, b times\n");
+    printf("enter a: ");
+    scanf("%d", &a);
+    printf("enter b: ");
+    scanf("%d", &b);
 
-    binary_print(decimal);
+    printf("result without recursion is: %d\n", power_without_recursion(a, b));
+    printf("result with recursion is: %d\n", power_recursion(a, b));
+    printf("result with recursion is: %d\n", power_recursion_optimized(a, b));
 
     return 0;
 }
