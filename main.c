@@ -33,6 +33,12 @@ void calculator_way_array ()
     int arr_length = 20 - base;
     int* arr = (int *)calloc((size_t)arr_length, sizeof(int));
     int solutions_count = power_without_recursion(2/* количество типов в enum */, arr_length);
+    int** solutions = (int**)calloc((size_t)solutions_count, sizeof(int*));
+
+    for (int i = 0; i < solutions_count; i++)
+    {
+        solutions[i] = NULL;
+    }
 
     /* тестируем, что будет при каждом экшене. В случае корректного решения записываем его в таблицу */
     while (solutions_count != 0)
@@ -88,26 +94,64 @@ void calculator_way_array ()
 
         if (base == 20)
         {
-            succeed_solutions_number++;
-            printf("%d succeed solution! base is: %d, actions list: ", succeed_solutions_number, base);
+            int* solution_copy = (int *)calloc((size_t)arr_length, sizeof(int));
 
             for (int i = 0; i < arr_length; i++)
             {
-                if (arr[i] >= 5)
+                solution_copy[i] = arr[i];
+            }
+
+            int is_arrays_equals = 0;
+            int ready_solutions = 0;
+            int ready_unique_solutions = 0;
+
+            for (int i = 0; i < solutions_count; i++)
+            {
+                if (solutions[i] != NULL)
                 {
-                    printf(", %d - ", i);
-                    if (arr[i] == AddOne)
+                    int is_equals = 1;
+
+                    for (int j = 0; j < arr_length; j++)
                     {
-                        printf("+1");
+                        if (solutions[i][j] != solution_copy[j])
+                        {
+                            is_equals = 0;
+                        };
                     }
-                    else if (arr[i] == MultiplyByTwo)
+                    ready_solutions++;
+                    if (is_equals == 0)
                     {
-                        printf("x2");
+                        ready_unique_solutions++;
                     }
                 }
             }
-            printf("\n");
 
+            is_arrays_equals = ready_solutions - ready_unique_solutions;
+
+            if (is_arrays_equals == 0)
+            {
+                solutions[succeed_solutions_number] = solution_copy;
+
+                succeed_solutions_number++;
+                printf("%d succeed solution! base is: %d, actions list: ", succeed_solutions_number, base);
+                for (int i = 0; i < arr_length; i++)
+                {
+                    if (arr[i] >= 5)
+                    {
+                        printf(", %d - ", i + 1);
+                        if (arr[i] == AddOne)
+                        {
+                            printf("+1");
+                        }
+                        else if (arr[i] == MultiplyByTwo)
+                        {
+                            printf("x2");
+                        }
+                    }
+                }
+                printf("\n");
+
+            }
         }
 
         for (int i = 0; i < arr_length; i++)
