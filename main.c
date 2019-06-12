@@ -12,23 +12,34 @@ struct Result binary_find (int val, int const arr[], int length)
 {
     struct Result rslt = {0, 0, 0};
     int is_complete = 0;
-    int i = length/2 + length%2;
+    int step_size = length/2;
+    int i = step_size;
+
+    if ((val > arr[length - 1]) || (val < arr[0]))
+    {
+        rslt.rslt_val = val;
+        rslt.rslt_index =  -1;
+        is_complete = 1;
+    }
 
     while (is_complete != 1)
     {
         rslt.try_count++;
         if (arr[i - 1] != val)
         {
+            step_size > 1 ? (step_size = step_size/2) : (step_size);
             rslt.rslt_val = arr[i - 1];
             rslt.rslt_index = i - 1;
             printf("\n%d try: { value: %d, index: %d, tries: %d };", rslt.try_count, rslt.rslt_val, rslt.rslt_index, rslt.try_count);
             if (arr[i - 1] < val)
             {
-                i += (i)/2;
+                i += step_size;
+                continue;
             }
             else if (arr[i - 1] > val)
             {
-                i -= (i)/2;
+                i -= step_size;
+                continue;
             }
         }
         else
