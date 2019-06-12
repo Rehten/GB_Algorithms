@@ -1,45 +1,37 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-enum Actions
+int binary_find (int val, int arr[])
 {
-    AddOne = 5,
-    MultiplyByTwo = 6
-};
+    int rslt[2] = {0, 0};
 
-int calculator_way_recursion (int base, int max, int* result_count)
+    return *rslt;
+}
+
+void print_binary_find (int* rslt)
 {
-    if (base < max)
-    {
-        int plus_one = calculator_way_recursion(base + 1, max, result_count);
-        if (plus_one == 1)
-        {
-            *result_count = *result_count + 1;
-        }
-
-        int multiply_two = calculator_way_recursion(base * 2, max, result_count);
-        if (multiply_two == 1)
-        {
-            *result_count = *result_count + 1;
-        }
-
-        return 0;
-    }
-    else if (base == max)
-    {
-        return 1;
-    }
-    else
-    {
-        return -1;
-    }
-
+    printf("\nResult of Binary finding: { %d, %d, };", rslt[0], rslt[1]);
 }
 
 int main(int argc, char *argv[])
 {
-    int count = 0;
-    calculator_way_recursion(3, 20, &count);
-    printf("Total solutions is %d", count);
+    int target_array[25];
+
+    printf("Array: { ");
+    for (int i = 0; i < sizeof(target_array) / sizeof(target_array[0]); i++)
+    {
+        target_array[i] = i * 3;
+
+        if (i != 0)
+        {
+            printf(", ");
+        }
+        printf("%d", target_array[i]);
+    }
+    printf(" }");
+
+    int find_rslt = binary_find(1, target_array);
+
+    print_binary_find(&find_rslt);
     return 0;
 }
