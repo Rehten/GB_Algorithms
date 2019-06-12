@@ -27,7 +27,7 @@ struct Result binary_find (int val, int const arr[], int length)
         rslt.try_count++;
         if (arr[i - 1] != val)
         {
-            step_size > 1 ? (step_size = step_size/2) : (step_size);
+            step_size > 1 ? (step_size = step_size/2 + step_size%2) : (step_size);
             rslt.rslt_val = arr[i - 1];
             rslt.rslt_index = i - 1;
             printf("\n%d try: { value: %d, index: %d, tries: %d };", rslt.try_count, rslt.rslt_val, rslt.rslt_index, rslt.try_count);
@@ -64,14 +64,12 @@ int main(int argc, char *argv[])
     int arr_multiply;
     printf("Enter arr size: ");
     scanf("%d", &arr_size);
-    printf("Enter arr member multiply constant(for 3 - arr[1] == 3, arr[2] == 6): ");
-    scanf("%d", &arr_multiply);
     int target_array[arr_size];
 
     printf("Array: { ");
     for (int i = 0; i < sizeof(target_array) / sizeof(target_array[0]); i++)
     {
-        target_array[i] = (i + 1) * arr_multiply;
+        target_array[i] = (i + 1);
 
         if (i != 0)
         {
