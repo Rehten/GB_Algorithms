@@ -19,13 +19,16 @@ struct Result binary_find (int val, int const arr[], int length)
         rslt.try_count++;
         if (arr[i - 1] != val)
         {
-            if (arr[i - 1] > val)
+            rslt.rslt_val = arr[i - 1];
+            rslt.rslt_index = i - 1;
+            printf("\n%d try: { value: %d, index: %d, tries: %d };", rslt.try_count, rslt.rslt_val, rslt.rslt_index, rslt.try_count);
+            if (arr[i - 1] < val)
             {
-                i += (i)/2 + (i)%2;
+                i += (i)/2;
             }
-            else if (arr[i - 1] < val)
+            else if (arr[i - 1] > val)
             {
-                i -= ((i)/2 - (i)%2);
+                i -= (i)/2;
             }
         }
         else
