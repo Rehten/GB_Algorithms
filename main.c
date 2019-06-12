@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
+// Сысоев - Реализация бинарного поиска
 struct Result
 {
     int rslt_val;
