@@ -5,18 +5,43 @@ struct Result
 {
     int rslt_val;
     int rslt_index;
+    int try_count;
 };
 
-struct Result binary_find (int val, int arr[])
+struct Result binary_find (int val, int const arr[], int length)
 {
-    struct Result rslt = {0, 0};
+    struct Result rslt = {0, 0, 0};
+    int is_complete = 0;
+    int i = length/2 + length%2;
+
+    while (is_complete != 1)
+    {
+        rslt.try_count++;
+        if (arr[i - 1] != val)
+        {
+            if (arr[i - 1] > val)
+            {
+                i += (i)/2 + (i)%2;
+            }
+            else if (arr[i - 1] < val)
+            {
+                i -= ((i)/2 - (i)%2);
+            }
+        }
+        else
+        {
+            rslt.rslt_val = val;
+            rslt.rslt_index = i - 1;
+            is_complete = 1;
+        }
+    }
 
     return rslt;
 }
 
 void print_binary_find (struct Result rslt)
 {
-    printf("\nResult of Binary finding: { rslt_val: %d, rslt_index: %d };", rslt.rslt_val, rslt.rslt_index);
+    printf("\nResult of Binary finding: { value: %d, index: %d, tries: %d };", rslt.rslt_val, rslt.rslt_index, rslt.try_count);
 }
 
 int main(int argc, char *argv[])
@@ -42,7 +67,12 @@ int main(int argc, char *argv[])
     }
     printf(" }");
 
-    struct Result find_rslt = binary_find(1, target_array);
+    int finding_val;
+
+    printf("\n\nSelect value for found: ");
+    scanf("%d", &finding_val);
+
+    struct Result find_rslt = binary_find(finding_val, target_array, sizeof(target_array) / sizeof(target_array[0]));
 
     print_binary_find(find_rslt);
     return 0;
