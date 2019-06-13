@@ -35,6 +35,7 @@ void swap_items(int* a, int* b)
 
 struct Result sort_bubble(int* arr, int length)
 {
+    // аллокация памяти под копию массива
     int* sorted_arr = malloc(sizeof(arr[0]) * length);
     int is_complete = 0;
     struct Result rslt;
@@ -42,6 +43,7 @@ struct Result sort_bubble(int* arr, int length)
     rslt.rslt_val_length = length;
     rslt.try_count = 0;
 
+    // копирование массива
     for (int i = 0; i < length; i++)
     {
         sorted_arr[i] = arr[i];
@@ -58,6 +60,81 @@ struct Result sort_bubble(int* arr, int length)
                 is_complete = 0;
             }
             rslt.try_count++;
+        }
+
+    }
+
+    return rslt;
+}
+
+struct Result sort_cocktail(int* arr, int length)
+{
+    // аллокация памяти под копию массива
+    int* sorted_arr = malloc(sizeof(arr[0]) * length);
+    int is_complete = 0;
+    int reach = length;
+    int start = 0;
+    int loop_direction = 1; /* 1 - прямо, (-1) - обратно */
+    int* reach_element; /* самый большой при нечетном проходе, самый малый при четном */
+    struct Result rslt;
+    rslt.rslt_val = sorted_arr;
+    rslt.rslt_val_length = length;
+    rslt.try_count = 0;
+
+    // копирование массива
+    for (int i = 0; i < length; i++)
+    {
+        sorted_arr[i] = arr[i];
+    }
+
+    while (is_complete == 0)
+    {
+        is_complete = 1;
+        if (loop_direction == 1)
+        {
+            reach_element = &arr[start];
+            for (int i = start; i < reach - 1; i++)
+            {
+                if ((sorted_arr[i] > sorted_arr[i + 1]))
+                {
+                    swap_items(&sorted_arr[i], &sorted_arr[i + 1]);
+                    is_complete = 0;
+                }
+                if ((sorted_arr[i] > *reach_element))
+                {
+                    reach_element = &sorted_arr[i];
+                }
+                if (((i + 1) == reach))
+                {
+                    swap_items(reach_element, &arr[reach]);
+                    reach--;
+                }
+                rslt.try_count++;
+            }
+            loop_direction *= (-1);
+        }
+        else if (loop_direction == -1)
+        {
+            reach_element = &arr[reach];
+            for (int i = reach; i > start; i--)
+            {
+                if ((sorted_arr[i] < sorted_arr[i - 1]))
+                {
+                    swap_items(&sorted_arr[i], &sorted_arr[i - 1]);
+                    is_complete = 0;
+                }
+                if ((sorted_arr[i] < *reach_element))
+                {
+                    reach_element = &sorted_arr[i];
+                }
+                if (((i - 1) == start))
+                {
+                    swap_items(reach_element, &arr[start]);
+                    start++;
+                }
+                rslt.try_count++;
+            }
+            loop_direction *= (-1);
         }
 
     }
@@ -90,6 +167,8 @@ int main(int argc, char *argv[])
 
     printf("\nBubble sort result: ");
     print_rslt(sort_bubble(target_array, arr_size));
+    printf("\nCocktail sort result: ");
+    print_rslt(sort_cocktail(target_array, arr_size));
 
     return 0;
 }
