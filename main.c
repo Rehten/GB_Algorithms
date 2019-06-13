@@ -72,7 +72,7 @@ struct Result sort_cocktail(int* arr, int length)
     // аллокация памяти под копию массива
     int* sorted_arr = malloc(sizeof(arr[0]) * length);
     int is_complete = 0;
-    int reach = length;
+    int reach = length - 1;
     int start = 0;
     int loop_direction = 1; /* 1 - прямо, (-1) - обратно */
     int* reach_element; /* самый большой при нечетном проходе, самый малый при четном */
@@ -92,50 +92,51 @@ struct Result sort_cocktail(int* arr, int length)
         is_complete = 1;
         if (loop_direction == 1)
         {
-            reach_element = &arr[start];
-            for (int i = start; i < reach - 1; i++)
+            reach_element = &sorted_arr[reach];
+            for (int i = start; i < reach; i++)
             {
-                if ((sorted_arr[i] > sorted_arr[i + 1]))
+                if (sorted_arr[i] > sorted_arr[i + 1])
                 {
                     swap_items(&sorted_arr[i], &sorted_arr[i + 1]);
                     is_complete = 0;
                 }
-                if ((sorted_arr[i] > *reach_element))
+                if (sorted_arr[i] > *reach_element)
                 {
-                    reach_element = &sorted_arr[i];
+                    *reach_element = sorted_arr[i];
                 }
-                if (((i + 1) == reach))
+                if ((i + 1 == reach) && (sorted_arr[reach] != *reach_element))
                 {
-                    swap_items(reach_element, &arr[reach]);
-                    reach--;
+                    swap_items(&sorted_arr[i + 1], reach_element);
+                    is_complete = 0;
                 }
                 rslt.try_count++;
             }
-            loop_direction *= (-1);
+            reach--;
         }
         else if (loop_direction == -1)
         {
-            reach_element = &arr[reach];
+            reach_element = &sorted_arr[start];
             for (int i = reach; i > start; i--)
             {
-                if ((sorted_arr[i] < sorted_arr[i - 1]))
+                if (sorted_arr[i - 1] > sorted_arr[i])
                 {
-                    swap_items(&sorted_arr[i], &sorted_arr[i - 1]);
+                    swap_items(&sorted_arr[i - 1], &sorted_arr[i]);
                     is_complete = 0;
                 }
-                if ((sorted_arr[i] < *reach_element))
+                if (sorted_arr[i] < *reach_element)
                 {
-                    reach_element = &sorted_arr[i];
+                    *reach_element = sorted_arr[i];
                 }
-                if (((i - 1) == start))
+                if ((i - 1 == start) && (sorted_arr[i - 1] != *reach_element))
                 {
-                    swap_items(reach_element, &arr[start]);
-                    start++;
+                    swap_items(&sorted_arr[i - 1], reach_element);
+                    is_complete = 0;
                 }
                 rslt.try_count++;
             }
-            loop_direction *= (-1);
+            start++;
         }
+        loop_direction *= (-1);
 
     }
 
