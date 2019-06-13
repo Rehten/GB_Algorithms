@@ -129,17 +129,25 @@ struct Result sort_chose(int* arr, int length)
 struct Result sort_insert(int* arr, int length)
 {
     // аллокация памяти под копию массива
-    int* sorted_arr = calloc(sizeof(arr[0]), sizeof(length));
+    int* sorted_arr = malloc(sizeof(arr[0]) * length);
     struct Result rslt;
     rslt.rslt_val = sorted_arr;
     rslt.rslt_val_length = length;
     rslt.try_count = 0;
-    int* min_elem = NULL;
     int end = 0;
 
-    while (end <= length)
+    while (end < length)
     {
-
+        int pos = end;
+        sorted_arr[end] = arr[end];
+        rslt.try_count++;
+        while ((pos > 0) && (sorted_arr[pos] < sorted_arr[pos - 1]))
+        {
+            swap_items(&sorted_arr[pos], &sorted_arr[pos - 1]);
+            pos--;
+            rslt.try_count++;
+        }
+        end++;
     }
 
     return rslt;
