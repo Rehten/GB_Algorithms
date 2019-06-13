@@ -121,6 +121,7 @@ struct Result sort_chose(int* arr, int length)
             swap_items(&sorted_arr[start], min_elem);
         }
         start++;
+        rslt.try_count++;
     }
 
     return rslt;
@@ -148,6 +149,7 @@ struct Result sort_insert(int* arr, int length)
             rslt.try_count++;
         }
         end++;
+        rslt.try_count++;
     }
 
     return rslt;
@@ -281,6 +283,37 @@ int main(int argc, char *argv[])
     print_rslt(sort_chose(target_array, arr_size));
     printf("\nInsert sort result: ");
     print_rslt(sort_insert(target_array, arr_size));
+
+    // Сравнение сортировок на величинах 10 - 100 - 200 - 500 - 1000 - 2000 - 5000 - 10000 и показать их O(n)
+    // 1 - yes, 0 - no
+    int print_algorythms;
+    printf("\nDo you want see compare sorting with asymptotic difficult? 1 for yes, 0 for no");
+
+    scanf("%d", &print_algorythms);
+
+    if (print_algorythms == 1)
+    {
+        int sorted_categories[8] = {10, 100, 200, 500, 1000, 2000, 5000, 10000};
+
+        printf("\nAlgorythm:        Elems count:        Tries:          O(n):");
+        for (int i = 0; i < 8; i++)
+        {
+            int target_arr[sorted_categories[i]];
+
+            for (int j = 0; j < sorted_categories[i]; j++)
+            {
+                target_arr[j] = (rand() + j)%sorted_categories[i];
+            }
+            struct Result bubble_result = sort_bubble(target_arr, sorted_categories[i]);
+            struct Result cocktail_result = sort_cocktail(target_arr, sorted_categories[i]);
+            struct Result chose_result = sort_chose(target_arr, sorted_categories[i]);
+            struct Result insert_result = sort_insert(target_arr, sorted_categories[i]);
+            printf("\n\n\nBubble sort       %d                   %d               %.0lf    ", sorted_categories[i], bubble_result.try_count, (double)(sorted_categories[i] * sorted_categories[i]));
+            printf("\nCocktail sort     %d                   %d               %.0lf    ", sorted_categories[i], cocktail_result.try_count, (double)(sorted_categories[i] * sorted_categories[i]));
+            printf("\nChose sort        %d                   %d               %.0lf    ", sorted_categories[i], chose_result.try_count, (double)(sorted_categories[i] * sorted_categories[i]));
+            printf("\nInsert sort       %d                   %d               %.0lf    ", sorted_categories[i], insert_result.try_count, (double)(sorted_categories[i] * sorted_categories[i]));
+        }
+    }
 
     return 0;
 }
