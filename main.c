@@ -388,6 +388,7 @@ int main(int argc, char *argv[])
             print_str(sort_insert(target_arr, sorted_categories[i]).try_count);
             printf("          ");
             print_str(sorted_categories[i] * sorted_categories[i]);
+            printf("\n");
 
         }
     }
