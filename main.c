@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <mem.h>
 
 
 // Сысоев - Реализация пузырьковой, шейкерной, сортировки выбором и их сравнения
@@ -9,6 +10,61 @@ struct Result
     int* rslt_val;
     int try_count;
 };
+
+void print_str (int count)
+{
+    char* rslt = malloc(sizeof(char) * 10);
+    for (int i = 0; i < 10; i++)
+    {
+        if (count > 0)
+        {
+            // сюда поступит только число от 1 до 10; - сужающих преобразований быть не должно
+            switch (count%10)
+            {
+                case 1:
+                    rslt[i] = '1';
+                    break;
+                case 2:
+                    rslt[i] = '2';
+                    break;
+                case 3:
+                    rslt[i] = '3';
+                    break;
+                case 4:
+                    rslt[i] = '4';
+                    break;
+                case 5:
+                    rslt[i] = '5';
+                    break;
+                case 6:
+                    rslt[i] = '6';
+                    break;
+                case 7:
+                    rslt[i] = '7';
+                    break;
+                case 8:
+                    rslt[i] = '8';
+                    break;
+                case 9:
+                    rslt[i] = '9';
+                    break;
+                default:
+                    rslt[i] = '0';
+                    break;
+            }
+            count /= 10;
+        }
+        else
+        {
+            rslt[i] = ' ';
+        }
+    }
+
+    for (int i = 0; i < 10; i++)
+    {
+        printf("%c", rslt[9 - i]);
+    }
+}
 
 void print_rslt(struct Result rslt)
 {
@@ -295,7 +351,7 @@ int main(int argc, char *argv[])
     {
         int sorted_categories[8] = {10, 100, 200, 500, 1000, 2000, 5000, 10000};
 
-        printf("\nAlgorythm:        Elems count:        Tries:          O(n):");
+        printf("\nAlgorythm:        Elems count:            Tries:               O(n):");
         for (int i = 0; i < 8; i++)
         {
             int target_arr[sorted_categories[i]];
@@ -304,14 +360,35 @@ int main(int argc, char *argv[])
             {
                 target_arr[j] = (rand() + j)%sorted_categories[i];
             }
-            struct Result bubble_result = sort_bubble(target_arr, sorted_categories[i]);
-            struct Result cocktail_result = sort_cocktail(target_arr, sorted_categories[i]);
-            struct Result chose_result = sort_chose(target_arr, sorted_categories[i]);
-            struct Result insert_result = sort_insert(target_arr, sorted_categories[i]);
-            printf("\n\n\nBubble sort       %d                   %d               %.0lf    ", sorted_categories[i], bubble_result.try_count, (double)(sorted_categories[i] * sorted_categories[i]));
-            printf("\nCocktail sort     %d                   %d               %.0lf    ", sorted_categories[i], cocktail_result.try_count, (double)(sorted_categories[i] * sorted_categories[i]));
-            printf("\nChose sort        %d                   %d               %.0lf    ", sorted_categories[i], chose_result.try_count, (double)(sorted_categories[i] * sorted_categories[i]));
-            printf("\nInsert sort       %d                   %d               %.0lf    ", sorted_categories[i], insert_result.try_count, (double)(sorted_categories[i] * sorted_categories[i]));
+
+
+
+
+            printf("\n\n\nBubble sort        ");
+            print_str(sorted_categories[i]);
+            printf("         ");
+            print_str(sort_bubble(target_arr, sorted_categories[i]).try_count);
+            printf("          ");
+            print_str(sorted_categories[i] * sorted_categories[i]);
+            printf("\nCocktail sort      ");
+            print_str(sorted_categories[i]);
+            printf("         ");
+            print_str(sort_cocktail(target_arr, sorted_categories[i]).try_count);
+            printf("          ");
+            print_str(sorted_categories[i] * sorted_categories[i]);
+            printf("\nChose sort         ");
+            print_str(sorted_categories[i]);
+            printf("         ");
+            print_str(sort_chose(target_arr, sorted_categories[i]).try_count);
+            printf("          ");
+            print_str(sorted_categories[i] * sorted_categories[i]);
+            printf("\nInsert sort        ");
+            print_str(sorted_categories[i]);
+            printf("         ");
+            print_str(sort_insert(target_arr, sorted_categories[i]).try_count);
+            printf("          ");
+            print_str(sorted_categories[i] * sorted_categories[i]);
+
         }
     }
 
