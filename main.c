@@ -12,7 +12,7 @@ struct Result
 
 void print_rslt(struct Result rslt)
 {
-    printf("\nResult Output:>> { ");
+    printf("\nResult Output:>> { array: ");
     for (int i = 0; i < rslt.rslt_val_length; i++)
     {
         if (i != 0)
@@ -21,27 +21,53 @@ void print_rslt(struct Result rslt)
         }
         printf("%d", rslt.rslt_val[i]);
     }
-    printf(" }");
+    printf(" }, tries: %d }", rslt.try_count);
 
 
+}
+
+void swap_items(int* a, int* b)
+{
+    *b += *a;
+    *a = *b - *a;
+    *b = *b - *a;
 }
 
 struct Result sort_bubble(int* arr, int length)
 {
     int* sorted_arr = malloc(sizeof(arr[0]) * length);
+    int is_complete = 0;
     struct Result rslt;
-    rslt.rslt_val = arr;
+    rslt.rslt_val = sorted_arr;
     rslt.rslt_val_length = length;
     rslt.try_count = 0;
+
+    for (int i = 0; i < length; i++)
+    {
+        sorted_arr[i] = arr[i];
+    }
+
+    while (is_complete == 0)
+    {
+        is_complete = 1;
+        for (int i = 0; i < length - 1; i++)
+        {
+            if (sorted_arr[i] > sorted_arr[i + 1])
+            {
+                swap_items(&sorted_arr[i], &sorted_arr[i + 1]);
+                is_complete = 0;
+            }
+            rslt.try_count++;
+        }
+
+    }
 
     return rslt;
 }
 
 int main(int argc, char *argv[])
 {
-    int arr_size;
-    int arr_multiply;
-    printf("Enter arr size: ");
+    int arr_size;printf("Enter arr size: ");
     scanf("%d", &arr_size);
     int target_array[arr_size];
 
@@ -62,6 +88,7 @@ int main(int argc, char *argv[])
     }
     printf(" }");
 
+    printf("\nBubble sort result: ");
     print_rslt(sort_bubble(target_array, arr_size));
 
     return 0;
