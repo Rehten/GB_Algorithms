@@ -2,62 +2,39 @@
 #include <stdlib.h>
 
 
-// Сысоев - Реализация бинарного поиска
+// Сысоев - Реализация пузырьковой, шейкерной, сортировки выбором и их сравнения
 struct Result
 {
-    int rslt_val;
-    int rslt_index;
+    int rslt_val_length;
+    int* rslt_val;
     int try_count;
 };
 
-struct Result binary_find (int val, int const arr[], int length)
+void print_rslt(struct Result rslt)
 {
-    struct Result rslt = {0, 0, 0};
-    int is_complete = 0;
-    int step_size = length/2;
-    int i = step_size;
-
-    if ((val > arr[length - 1]) || (val < arr[0]))
+    printf("\nResult Output:>> { ");
+    for (int i = 0; i < rslt.rslt_val_length; i++)
     {
-        rslt.rslt_val = val;
-        rslt.rslt_index =  -1;
-        is_complete = 1;
-    }
-
-    while (is_complete != 1)
-    {
-        rslt.try_count++;
-        if (arr[i - 1] != val)
+        if (i != 0)
         {
-            step_size > 1 ? (step_size = step_size/2 + step_size%2) : (step_size);
-            rslt.rslt_val = arr[i - 1];
-            rslt.rslt_index = i - 1;
-            printf("\n%d try: { value: %d, index: %d, tries: %d };", rslt.try_count, rslt.rslt_val, rslt.rslt_index, rslt.try_count);
-            if (arr[i - 1] < val)
-            {
-                i += step_size;
-                continue;
-            }
-            else if (arr[i - 1] > val)
-            {
-                i -= step_size;
-                continue;
-            }
+            printf(", ");
         }
-        else
-        {
-            rslt.rslt_val = val;
-            rslt.rslt_index = i - 1;
-            is_complete = 1;
-        }
+        printf("%d", rslt.rslt_val[i]);
     }
+    printf(" }");
 
-    return rslt;
+
 }
 
-void print_binary_find (struct Result rslt)
+struct Result sort_bubble(int* arr, int length)
 {
-    printf("\nResult of Binary finding: { value: %d, index: %d, tries: %d };", rslt.rslt_val, rslt.rslt_index, rslt.try_count);
+    int* sorted_arr = malloc(sizeof(arr[0]) * length);
+    struct Result rslt;
+    rslt.rslt_val = arr;
+    rslt.rslt_val_length = length;
+    rslt.try_count = 0;
+
+    return rslt;
 }
 
 int main(int argc, char *argv[])
@@ -68,11 +45,15 @@ int main(int argc, char *argv[])
     scanf("%d", &arr_size);
     int target_array[arr_size];
 
-    printf("Array: { ");
     for (int i = 0; i < sizeof(target_array) / sizeof(target_array[0]); i++)
     {
-        target_array[i] = (i + 1);
+        printf("Program:>> enter %d member: ", i);
+        scanf("%d", &target_array[i]);
+    }
 
+    printf("Program Output:>> { ");
+    for (int i = 0; i < sizeof(target_array) / sizeof(target_array[0]); i++)
+    {
         if (i != 0)
         {
             printf(", ");
@@ -81,13 +62,7 @@ int main(int argc, char *argv[])
     }
     printf(" }");
 
-    int finding_val;
+    print_rslt(sort_bubble(target_array, arr_size));
 
-    printf("\n\nSelect value for found: ");
-    scanf("%d", &finding_val);
-
-    struct Result find_rslt = binary_find(finding_val, target_array, sizeof(target_array) / sizeof(target_array[0]));
-
-    print_binary_find(find_rslt);
     return 0;
 }
