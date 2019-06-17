@@ -58,7 +58,7 @@ void print_str (int count)
     }
 }
 
-int way_count (int** matrix)
+int way_count (int** matrix, int matrix_size)
 {
     return 23;
 }
@@ -136,7 +136,48 @@ int main(int argc, char *argv[])
     }
     else
     {
-        printf("Total %d ways from {1, 1} to {%d, %d}", way_count(matrix), trgt_row_x, trgt_column_y);
+        // print with replace 1 to E on target cell and 1 to S on  {1, 1} start cell
+        // print matrix
+        if (matrix_size < 10)
+        {
+            printf("        COLUMN:| < ");
+            for (int i = 0; i < matrix_size; i++)
+            {
+                printf(" %d", i + 1);
+            }
+
+            printf("  >\n");
+            printf("                   ");
+            for (int i = 0; i < matrix_size; i++)
+            {
+                printf("__");
+            }
+
+            printf("__\n");
+        }
+
+        for (int i = 0; i < matrix_size; i++)
+        {
+            print_str(i + 1);
+            printf(" row:| [ ");
+            for (int j = 0; j < matrix_size; j++)
+            {
+                if ((i == 0) && (j == 0))
+                {
+                    printf(" S");
+                }
+                else if ((i + 1 == trgt_row_x) && (j + 1 == trgt_column_y))
+                {
+                    printf(" E", matrix[i][j]);
+                }
+                else
+                {
+                    printf(" %d", matrix[i][j]);
+                }
+            }
+            printf("  ]\n");
+        }
+        printf("Total %d ways from {1, 1} to {%d, %d}", way_count(matrix, matrix_size), trgt_row_x, trgt_column_y);
     }
 
 
