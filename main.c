@@ -2,197 +2,79 @@
 #include <stdlib.h>
 
 
-// Сысоев - Нахождение количества маршрутов с препятствиями
-void print_str (int count)
-{
-    char* rslt = malloc(sizeof(char) * 10);
-    for (int i = 0; i < 10; i++)
-    {
-        if (count > 0)
-        {
-            // сюда поступит только число от 1 до 10; - сужающих преобразований быть не должно
-            switch (count%10)
-            {
-                case 1:
-                    rslt[i] = '1';
-                    break;
-                case 2:
-                    rslt[i] = '2';
-                    break;
-                case 3:
-                    rslt[i] = '3';
-                    break;
-                case 4:
-                    rslt[i] = '4';
-                    break;
-                case 5:
-                    rslt[i] = '5';
-                    break;
-                case 6:
-                    rslt[i] = '6';
-                    break;
-                case 7:
-                    rslt[i] = '7';
-                    break;
-                case 8:
-                    rslt[i] = '8';
-                    break;
-                case 9:
-                    rslt[i] = '9';
-                    break;
-                default:
-                    rslt[i] = '0';
-                    break;
-            }
-            count /= 10;
-        }
-        else
-        {
-            rslt[i] = ' ';
-        }
-    }
-
-    for (int i = 0; i < 10; i++)
-    {
-        printf("%c", rslt[9 - i]);
-    }
-}
-
-int way_count (int** matrix, int matrix_size, int trgt_row_x, int trgt_column_y)
-{
-    if (matrix[trgt_row_x - 1][trgt_column_y - 1] == 0)
-    {
-        return 0;
-    }
-    if (trgt_row_x == 1)
-    {
-        return 1;
-    }
-    if (trgt_column_y == 1)
-    {
-        return 1;
-    }
-    return way_count(matrix, matrix_size, trgt_row_x - 1, trgt_column_y) + way_count(matrix, matrix_size, trgt_row_x, trgt_column_y - 1);
-}
+// Сысоев - Нахождение наибольшей общей подпоследовательности
+struct Result {
+    char* string;
+    int length;
+};
 
 int main(int argc, char *argv[])
 {
-    int** matrix = NULL;
-    int matrix_size;
+    char* string_one = calloc(sizeof(char), 10);
+    char* string_two = calloc(sizeof(char), 10);
 
-    printf("Enter matrix size: ");
-    scanf("%d", &matrix_size);
-
-    matrix = malloc(sizeof(int*) * matrix_size);
-
-    for (int i = 0; i < matrix_size; i++)
+    printf("Enter two strings: max length is 10, after last three letters :wq program exit from string enter mode\n");
+    printf("\nEnter first string: - any letter. :wq for finished");
+    for (int i = 0; i < 10; i++)
     {
-        matrix[i] = malloc(sizeof(int) * matrix_size);
+        scanf("%c", &string_one[i]);
+    }
 
-        for (int j = 0; j < matrix_size; j++)
+    printf("\nFirst string is: ");
+    for (int i = 0; i < 10; i++)
+    {
+        printf("%c", string_one[i]);
+    }
+
+    printf("\nEnter second string: - any letter. :wq for finished");
+    for (int i = 0; i < 10; i++)
+    {
+        scanf("%c", &string_two[i]);
+    }
+
+    printf("\nSecond string is: ");
+    for (int i = 0; i < 10; i++)
+    {
+        printf("%c", string_two[i]);
+    }
+
+    struct Result* results = calloc(sizeof(struct Result), 10);
+    int rslt_index = 0;
+
+    for (int i = 0; i < 10; i++)
+    {
+        results[rslt_index].length = 0;
+        results[rslt_index].string = calloc(sizeof(char), 10);
+        for (int j = 0; j < 10; j++)
         {
-            if ((i == 0) || (j == 0) || ((j == matrix_size - 1) || (i == matrix_size - 1)))
+            if (string_one[i] == string_two[j])
             {
-                matrix[i][j] = 1;
+                results[rslt_index].string[results[rslt_index].length] = string_one[i];
+                results[rslt_index].length++;
             }
-            else
-            {
-                // в 80% случаев генерирует 1, в остальных 0
-                matrix[i][j] = rand()%100 < 60 ? 1 : 0;
-            }
+        }
+        printf("\n Solution %d length is %d and string is: ", rslt_index + 1, results[rslt_index].length);
+        for (int k = 0; k < results[rslt_index].length; k++)
+        {
+            printf("%c", results[rslt_index].string[k]);
+        }
+        rslt_index++;
+    }
+
+    int rslt_successful_index = 0;
+    for (int i = 0; i < 10; i++)
+    {
+        if (results[i].length > results[rslt_successful_index].length)
+        {
+            rslt_successful_index = i;
         }
     }
 
-    // print matrix
-    if (matrix_size < 10)
+    printf("\n\nGeneral subtype of two types is: ");
+    for (int i = 0; i < results[rslt_successful_index].length; i++)
     {
-        printf("        COLUMN:| < ");
-        for (int i = 0; i < matrix_size; i++)
-        {
-            printf(" %d", i + 1);
-        }
-
-        printf("  >\n");
-        printf("                   ");
-        for (int i = 0; i < matrix_size; i++)
-        {
-            printf("__");
-        }
-
-        printf("__\n");
+        printf("%c", results[rslt_successful_index].string[i]);
     }
-
-    for (int i = 0; i < matrix_size; i++)
-    {
-        print_str(i + 1);
-        printf(" row:| [ ");
-        for (int j = 0; j < matrix_size; j++)
-        {
-            printf(" %d", matrix[i][j]);
-        }
-        printf("  ]\n");
-    }
-
-    int trgt_column_y;
-    int trgt_row_x;
-
-    printf("enter row and column coordinate in matrix: ");
-    printf("\nrow is ");
-    scanf("%d", &trgt_row_x);
-    printf("\ncolumn is ");
-    scanf("%d", &trgt_column_y);
-
-    if ((trgt_column_y > matrix_size) || (trgt_row_x > matrix_size) || (matrix[trgt_row_x - 1][trgt_column_y - 1] == 0))
-    {
-        printf("ERROR!!! INVALID VALUES! YOUR MATRIX CELL IS EQUAL 0 OR COORDINATE IS NOT REACHABLE");
-    }
-    else
-    {
-        // print with replace 1 to E on target cell and 1 to S on  {1, 1} start cell
-        // print matrix
-        if (matrix_size < 10)
-        {
-            printf("        COLUMN:| < ");
-            for (int i = 0; i < matrix_size; i++)
-            {
-                printf(" %d", i + 1);
-            }
-
-            printf("  >\n");
-            printf("                   ");
-            for (int i = 0; i < matrix_size; i++)
-            {
-                printf("__");
-            }
-
-            printf("__\n");
-        }
-
-        for (int i = 0; i < matrix_size; i++)
-        {
-            print_str(i + 1);
-            printf(" row:| [ ");
-            for (int j = 0; j < matrix_size; j++)
-            {
-                if ((i == 0) && (j == 0))
-                {
-                    printf(" S");
-                }
-                else if ((i + 1 == trgt_row_x) && (j + 1 == trgt_column_y))
-                {
-                    printf(" E", matrix[i][j]);
-                }
-                else
-                {
-                    printf(" %d", matrix[i][j]);
-                }
-            }
-            printf("  ]\n");
-        }
-        printf("Total %d ways from {1, 1} to {%d, %d}", way_count(matrix, matrix_size, trgt_row_x, trgt_column_y), trgt_row_x, trgt_column_y);
-    }
-
-
 
     return 0;
 }
