@@ -2,92 +2,101 @@
 #include <stdlib.h>
 
 
-// Сысоев - Реализация бинарного поиска
-struct Result
+// Сысоев - Нахождение количества маршрутов с препятствиями
+void print_str (int count)
 {
-    int rslt_val;
-    int rslt_index;
-    int try_count;
-};
-
-struct Result binary_find (int val, int const arr[], int length)
-{
-    struct Result rslt = {0, 0, 0};
-    int is_complete = 0;
-    int step_size = length/2;
-    int i = step_size;
-
-    if ((val > arr[length - 1]) || (val < arr[0]))
+    char* rslt = malloc(sizeof(char) * 10);
+    for (int i = 0; i < 10; i++)
     {
-        rslt.rslt_val = val;
-        rslt.rslt_index =  -1;
-        is_complete = 1;
-    }
-
-    while (is_complete != 1)
-    {
-        rslt.try_count++;
-        if (arr[i - 1] != val)
+        if (count > 0)
         {
-            step_size > 1 ? (step_size = step_size/2 + step_size%2) : (step_size);
-            rslt.rslt_val = arr[i - 1];
-            rslt.rslt_index = i - 1;
-            printf("\n%d try: { value: %d, index: %d, tries: %d };", rslt.try_count, rslt.rslt_val, rslt.rslt_index, rslt.try_count);
-            if (arr[i - 1] < val)
+            // сюда поступит только число от 1 до 10; - сужающих преобразований быть не должно
+            switch (count%10)
             {
-                i += step_size;
-                continue;
+                case 1:
+                    rslt[i] = '1';
+                    break;
+                case 2:
+                    rslt[i] = '2';
+                    break;
+                case 3:
+                    rslt[i] = '3';
+                    break;
+                case 4:
+                    rslt[i] = '4';
+                    break;
+                case 5:
+                    rslt[i] = '5';
+                    break;
+                case 6:
+                    rslt[i] = '6';
+                    break;
+                case 7:
+                    rslt[i] = '7';
+                    break;
+                case 8:
+                    rslt[i] = '8';
+                    break;
+                case 9:
+                    rslt[i] = '9';
+                    break;
+                default:
+                    rslt[i] = '0';
+                    break;
             }
-            else if (arr[i - 1] > val)
-            {
-                i -= step_size;
-                continue;
-            }
+            count /= 10;
         }
         else
         {
-            rslt.rslt_val = val;
-            rslt.rslt_index = i - 1;
-            is_complete = 1;
+            rslt[i] = ' ';
         }
     }
 
-    return rslt;
-}
-
-void print_binary_find (struct Result rslt)
-{
-    printf("\nResult of Binary finding: { value: %d, index: %d, tries: %d };", rslt.rslt_val, rslt.rslt_index, rslt.try_count);
+    for (int i = 0; i < 10; i++)
+    {
+        printf("%c", rslt[9 - i]);
+    }
 }
 
 int main(int argc, char *argv[])
 {
-    int arr_size;
-    int arr_multiply;
-    printf("Enter arr size: ");
-    scanf("%d", &arr_size);
-    int target_array[arr_size];
+    int** matrix = NULL;
+    int matrix_size;
 
-    printf("Array: { ");
-    for (int i = 0; i < sizeof(target_array) / sizeof(target_array[0]); i++)
+    printf("Enter matrix size: ");
+    scanf("%d", &matrix_size);
+
+    matrix = malloc(sizeof(int*) * matrix_size);
+
+    for (int i = 0; i < matrix_size; i++)
     {
-        target_array[i] = (i + 1);
+        matrix[i] = malloc(sizeof(int) * matrix_size);
 
-        if (i != 0)
+        for (int j = 0; j < matrix_size; j++)
         {
-            printf(", ");
+            if ((i == 0) || (j == 0) || ((j == matrix_size - 1) || (i == matrix_size - 1)))
+            {
+                matrix[i][j] = 1;
+            }
+            else
+            {
+                // в 80% случаев генерирует 1, в остальных 0
+                matrix[i][j] = rand()%100 < 80 ? 1 : 0;
+            }
         }
-        printf("%d", target_array[i]);
     }
-    printf(" }");
 
-    int finding_val;
+    // print matrix
+    for (int i = 0; i < matrix_size; i++)
+    {
+        print_str(i + 1);
+        printf(" row: [ ");
+        for (int j = 0; j < matrix_size; j++)
+        {
+            printf(" %d", matrix[i][j]);
+        }
+        printf("  ]\n");
+    }
 
-    printf("\n\nSelect value for found: ");
-    scanf("%d", &finding_val);
-
-    struct Result find_rslt = binary_find(finding_val, target_array, sizeof(target_array) / sizeof(target_array[0]));
-
-    print_binary_find(find_rslt);
     return 0;
 }
