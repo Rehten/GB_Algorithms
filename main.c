@@ -58,6 +58,11 @@ void print_str (int count)
     }
 }
 
+int way_count (int** matrix)
+{
+    return 23;
+}
+
 int main(int argc, char *argv[])
 {
     int** matrix = NULL;
@@ -87,10 +92,28 @@ int main(int argc, char *argv[])
     }
 
     // print matrix
+    if (matrix_size < 10)
+    {
+        printf("        COLUMN:| < ");
+        for (int i = 0; i < matrix_size; i++)
+        {
+            printf(" %d", i + 1);
+        }
+
+        printf("  >\n");
+        printf("                   ");
+        for (int i = 0; i < matrix_size; i++)
+        {
+            printf("__");
+        }
+
+        printf("__\n");
+    }
+
     for (int i = 0; i < matrix_size; i++)
     {
         print_str(i + 1);
-        printf(" row: [ ");
+        printf(" row:| [ ");
         for (int j = 0; j < matrix_size; j++)
         {
             printf(" %d", matrix[i][j]);
@@ -98,23 +121,22 @@ int main(int argc, char *argv[])
         printf("  ]\n");
     }
 
-    int trgt_x;
-    int trgt_y;
+    int trgt_column_y;
+    int trgt_row_x;
 
-    printf("enter x and y coordinate in matrix: ");
-    printf("\nx is ");
-    scanf("%d", &trgt_x);
-    printf("\ny is ");
-    scanf("%d", &trgt_y);
+    printf("enter row and column coordinate in matrix: ");
+    printf("\nrow is ");
+    scanf("%d", &trgt_row_x);
+    printf("\ncolumn is ");
+    scanf("%d", &trgt_column_y);
 
-    if ((trgt_x > matrix_size) || (trgt_y > matrix_size) || (matrix[trgt_y - 1][trgt_x - 1] == 0))
+    if ((trgt_column_y > matrix_size) || (trgt_row_x > matrix_size) || (matrix[trgt_row_x - 1][trgt_column_y - 1] == 0))
     {
-        printf("ERROR! INVALID VALUES");
+        printf("ERROR!!! INVALID VALUES! YOUR MATRIX CELL IS EQUAL 0 OR COORDINATE IS NOT REACHABLE");
     }
     else
     {
-        matrix[trgt_x - 1][trgt_y - 1] = 4;
-        printf("Done!, %d %d, %d\n", trgt_x, trgt_y, (matrix[trgt_y - 1][trgt_x - 1]));
+        printf("Total %d ways from {1, 1} to {%d, %d}", way_count(matrix), trgt_row_x, trgt_column_y);
     }
 
 
