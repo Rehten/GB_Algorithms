@@ -98,5 +98,26 @@ int main(int argc, char *argv[])
         printf("  ]\n");
     }
 
+    int trgt_x;
+    int trgt_y;
+
+    printf("enter x and y coordinate in matrix: ");
+    printf("\nx is ");
+    scanf("%d", &trgt_x);
+    printf("\ny is ");
+    scanf("%d", &trgt_y);
+
+    if ((trgt_x > matrix_size) || (trgt_y > matrix_size) || (matrix[trgt_y - 1][trgt_x - 1] == 0))
+    {
+        printf("ERROR! INVALID VALUES");
+    }
+    else
+    {
+        matrix[trgt_x - 1][trgt_y - 1] = 4;
+        printf("Done!, %d %d, %d\n", trgt_x, trgt_y, (matrix[trgt_y - 1][trgt_x - 1]));
+    }
+
+
+
     return 0;
 }
