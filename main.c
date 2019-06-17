@@ -58,9 +58,21 @@ void print_str (int count)
     }
 }
 
-int way_count (int** matrix, int matrix_size)
+int way_count (int** matrix, int matrix_size, int trgt_row_x, int trgt_column_y)
 {
-    return 23;
+    if (matrix[trgt_row_x - 1][trgt_column_y - 1] == 0)
+    {
+        return 0;
+    }
+    if (trgt_row_x == 1)
+    {
+        return 1;
+    }
+    if (trgt_column_y == 1)
+    {
+        return 1;
+    }
+    return way_count(matrix, matrix_size, trgt_row_x - 1, trgt_column_y) + way_count(matrix, matrix_size, trgt_row_x, trgt_column_y - 1);
 }
 
 int main(int argc, char *argv[])
@@ -86,7 +98,7 @@ int main(int argc, char *argv[])
             else
             {
                 // в 80% случаев генерирует 1, в остальных 0
-                matrix[i][j] = rand()%100 < 80 ? 1 : 0;
+                matrix[i][j] = rand()%100 < 60 ? 1 : 0;
             }
         }
     }
@@ -177,7 +189,7 @@ int main(int argc, char *argv[])
             }
             printf("  ]\n");
         }
-        printf("Total %d ways from {1, 1} to {%d, %d}", way_count(matrix, matrix_size), trgt_row_x, trgt_column_y);
+        printf("Total %d ways from {1, 1} to {%d, %d}", way_count(matrix, matrix_size, trgt_row_x, trgt_column_y), trgt_row_x, trgt_column_y);
     }
 
 
