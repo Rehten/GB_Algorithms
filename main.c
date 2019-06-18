@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     char* string_two = calloc(sizeof(char), 10);
 
     printf("Enter two strings: max length is 10, after last three letters :wq program exit from string enter mode\n");
-    printf("\nEnter first string: - any letter. :wq for finished");
+    printf("\nEnter first string: - 10 letters");
     for (int i = 0; i < 10; i++)
     {
         scanf("%c", &string_one[i]);
@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
         printf("%c", string_one[i]);
     }
 
-    printf("\nEnter second string: - any letter. :wq for finished");
+    printf("\nEnter second string: - 10 letters");
     for (int i = 0; i < 10; i++)
     {
         scanf("%c", &string_two[i]);
@@ -38,25 +38,28 @@ int main(int argc, char *argv[])
         printf("%c", string_two[i]);
     }
 
-    struct Result* results = calloc(sizeof(struct Result), 10);
+    struct Result* results = calloc(sizeof(struct Result), 20);
     int rslt_index = 0;
 
     for (int i = 0; i < 10; i++)
     {
         results[rslt_index].length = 0;
         results[rslt_index].string = calloc(sizeof(char), 10);
+        int rslt_start_j = -1;
+        int rslt_start_k = -1;
         for (int j = 0; j < 10; j++)
         {
-            if (string_one[i] == string_two[j])
+            for (int k = results[rslt_index].length; k < 10; k++)
             {
-                results[rslt_index].string[results[rslt_index].length] = string_one[i];
-                results[rslt_index].length++;
+                if ((string_one[k] == string_two[j]) && (k > rslt_start_k) && (j > rslt_start_j))
+                {
+                    rslt_start_j = j;
+                    rslt_start_k = k;
+                    results[rslt_index].string[results[rslt_index].length] = string_one[k];
+                    results[rslt_index].length++;
+                    j++;
+                }
             }
-        }
-        printf("\n Solution %d length is %d and string is: ", rslt_index + 1, results[rslt_index].length);
-        for (int k = 0; k < results[rslt_index].length; k++)
-        {
-            printf("%c", results[rslt_index].string[k]);
         }
         rslt_index++;
     }
@@ -75,6 +78,7 @@ int main(int argc, char *argv[])
     {
         printf("%c", results[rslt_successful_index].string[i]);
     }
+    printf(" and its length is %d", results[rslt_successful_index].length);
 
     return 0;
 }
