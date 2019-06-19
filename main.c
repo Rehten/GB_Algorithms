@@ -138,7 +138,7 @@ void is_string_valid(char* string, int length)
             clear_frame(b);
             printf("\n closed %c", next_closed_bracket);
             next_closed_bracket = next_closed_brace(buffer->bracket);
-            printf("\n Next closed %c", next_closed_bracket);
+            printf(", next closed %c", next_closed_bracket);
         }
         if (string[i] == 'z')
         {
