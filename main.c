@@ -20,9 +20,9 @@ struct BracketStackFrame {
 
 struct BracketStackFrame* next_bracket(struct BracketStackFrame* prev)
 {
-    prev->next = malloc(sizeof(struct BracketStackFrame));
-    prev->next->next = NULL;
-    return prev->next;
+    struct BracketStackFrame* rslt = malloc(sizeof(struct BracketStackFrame));
+    rslt->next = prev;
+    return rslt;
 }
 
 void clear_frame(struct BracketStackFrame* frame)
@@ -42,6 +42,21 @@ char cur_open_brace(char open_brace)
             return '(';
         default:
             return 'o';
+    }
+}
+
+char cur_closed_brace(char cur_brace)
+{
+    switch (cur_brace)
+    {
+        case '}':
+            return '}';
+        case ']':
+            return ']';
+        case ')':
+            return ')';
+        default:
+            return 'c';
     }
 }
 
@@ -99,12 +114,31 @@ void is_string_valid(char* string, int length)
 
     for (int i = 0; i < length; i++)
     {
+        if ((buffer == NULL) && ((cur_open_brace(string[i]) != 'o') || (cur_closed_brace(string[i]) != 'c')))
+        {
+            is_valid = 0;
+            break;
+        }
+        if ((cur_closed_brace(string[i]) != 'c') && (next_closed_bracket != cur_closed_brace(string[i]))) {
+            printf("\n%c\n", string[i]);
+            is_valid = 0;
+            break;
+        }
         if (cur_open_brace(string[i]) != 'o')
         {
             buffer = next_bracket(buffer);
             buffer->bracket = cur_open_brace(string[i]);
             next_closed_bracket = next_closed_brace(string[i]);
             printf("\n next open is %c, and closed is %c", buffer->bracket, next_closed_bracket);
+        }
+        if (string[i] == next_closed_brace(buffer->bracket))
+        {
+            struct BracketStackFrame* b = buffer;
+            buffer = buffer->next;
+            clear_frame(b);
+            printf("\n closed %c", next_closed_bracket);
+            next_closed_bracket = next_closed_brace(buffer->bracket);
+            printf("\n Next closed %c", next_closed_bracket);
         }
         if (string[i] == 'z')
         {
