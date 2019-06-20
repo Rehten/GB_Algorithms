@@ -112,8 +112,13 @@ void is_string_valid(char* string, int length)
     struct BracketStackFrame* buffer = first;
     char next_closed_bracket = next_closed_brace(first->bracket);
 
-    for (int i = 0; i < length; i++)
+    for (int i = 0; i < length - 1; i++)
     {
+        if (string[i] == 'z')
+        {
+            if (buffer)
+            break;
+        }
         if ((buffer == NULL) && ((cur_open_brace(string[i]) != 'o') || (cur_closed_brace(string[i]) != 'c')))
         {
             is_valid = 0;
@@ -138,18 +143,24 @@ void is_string_valid(char* string, int length)
             clear_frame(b);
             printf("\n closed %c", next_closed_bracket);
             next_closed_bracket = next_closed_brace(buffer->bracket);
+            if ((buffer == first) && (string[i + 2] != 'z'))
+            {
+                is_valid = 0;
+                break;
+            } else if ((buffer != first) && (string[i + 2] == 'z'))
+            {
+                is_valid = 0;
+                break;
+            }
             printf(", next closed %c", next_closed_bracket);
-        }
-        if (string[i] == 'z')
-        {
-            break;
+//            ([])(), {}(), ([{}])
         }
     }
 
 
     if (is_valid)
     {
-        printf("\nString is valid");
+        printf("\nSUCCESS!!! String is valid");
     }
     else
     {
