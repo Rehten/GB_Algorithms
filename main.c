@@ -211,6 +211,34 @@ struct Result sort_insert(int* arr, int length)
     return rslt;
 }
 
+struct Result sort_quick(int* arr, int length)
+{
+    // аллокация памяти под копию массива
+    int* sorted_arr = malloc(sizeof(arr[0]) * length);
+    struct Result rslt;
+    rslt.rslt_val = sorted_arr;
+    rslt.rslt_val_length = length;
+    rslt.try_count = 0;
+    int end = 0;
+
+    while (end < length)
+    {
+        int pos = end;
+        sorted_arr[end] = arr[end];
+        rslt.try_count++;
+        while ((pos > 0) && (sorted_arr[pos] < sorted_arr[pos - 1]))
+        {
+            swap_items(&sorted_arr[pos], &sorted_arr[pos - 1]);
+            pos--;
+            rslt.try_count++;
+        }
+        end++;
+        rslt.try_count++;
+    }
+
+    return rslt;
+}
+
 struct Result sort_cocktail(const int* arr, int length)
 {
     // аллокация памяти под копию массива
@@ -386,6 +414,12 @@ int main(int argc, char *argv[])
             print_str(sorted_categories[i]);
             printf("         ");
             print_str(sort_insert(target_arr, sorted_categories[i]).try_count);
+            printf("          ");
+            print_str(sorted_categories[i] * sorted_categories[i]);
+            printf("\nQuick sort         ");
+            print_str(sorted_categories[i]);
+            printf("         ");
+            print_str(sort_quick(target_arr, sorted_categories[i]).try_count);
             printf("          ");
             print_str(sorted_categories[i] * sorted_categories[i]);
             printf("\n");
