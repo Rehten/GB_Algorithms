@@ -211,32 +211,54 @@ struct Result sort_insert(int* arr, int length)
     return rslt;
 }
 
-struct Result sort_quick(int* arr, int length)
+struct Result sort_quick(int* arr, int start, int end, struct Result* result)
 {
-    // аллокация памяти под копию массива
-    int* sorted_arr = malloc(sizeof(arr[0]) * length);
-    struct Result rslt;
-    rslt.rslt_val = sorted_arr;
-    rslt.rslt_val_length = length;
-    rslt.try_count = 0;
-    int end = 0;
-
-    while (end < length)
+    if (result == NULL)
     {
-        int pos = end;
-        sorted_arr[end] = arr[end];
-        rslt.try_count++;
-        while ((pos > 0) && (sorted_arr[pos] < sorted_arr[pos - 1]))
+        result = calloc(sizeof(struct Result), 1);
+        result->try_count = 0;
+    }
+    int left = start;
+    int right = end;
+    struct Result* rslt = result;
+    rslt->rslt_val = arr;
+    rslt->rslt_val_length = end;
+    int middle = arr[(left + right)/2];
+
+    rslt->try_count += 2;
+
+    if (start < end)
+    {
+        rslt->try_count++;
+        do
         {
-            swap_items(&sorted_arr[pos], &sorted_arr[pos - 1]);
-            pos--;
-            rslt.try_count++;
-        }
-        end++;
-        rslt.try_count++;
+            while (arr[left] < middle)
+            {
+                left++;
+                rslt->try_count++;
+            }
+            while (arr[right - 1] > middle)
+            {
+                right--;
+                rslt->try_count++;
+            }
+            if (left <= right - 1)
+            {
+                int buf = arr[left];
+                arr[left] = arr[right - 1];
+                arr[right - 1] = buf;
+                left++;
+                right--;
+                rslt->try_count += 2;
+            }
+
+        } while (left <= right - 1);
+
+        sort_quick(arr, start, right, rslt);
+        sort_quick(arr, left, end, rslt);
     }
 
-    return rslt;
+    return *rslt;
 }
 
 struct Result sort_cocktail(const int* arr, int length)
@@ -367,6 +389,8 @@ int main(int argc, char *argv[])
     print_rslt(sort_chose(target_array, arr_size));
     printf("\nInsert sort result: ");
     print_rslt(sort_insert(target_array, arr_size));
+    printf("\nQuick sort result: ");
+    print_rslt(sort_quick(target_array, 0, arr_size, NULL));
 
     // Сравнение сортировок на величинах 10 - 100 - 200 - 500 - 1000 - 2000 - 5000 - 10000 и показать их O(n)
     // 1 - yes, 0 - no
@@ -419,7 +443,7 @@ int main(int argc, char *argv[])
             printf("\nQuick sort         ");
             print_str(sorted_categories[i]);
             printf("         ");
-            print_str(sort_quick(target_arr, sorted_categories[i]).try_count);
+            print_str(sort_quick(target_arr, 0, sorted_categories[i], NULL).try_count);
             printf("          ");
             print_str(sorted_categories[i] * sorted_categories[i]);
             printf("\n");
